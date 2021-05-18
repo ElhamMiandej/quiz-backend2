@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using quiz_backend.Models;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,17 @@ namespace quiz_backend.Controllers
             dbContext.Questions.Add(question);
             dbContext.SaveChanges();
                 
+        }
+
+        // PUT api/values/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] Question question)
+        {
+            if (id != question.Id)
+                return BadRequest();
+            dbContext.Entry(question).State = EntityState.Modified;
+            await dbContext.SaveChangesAsync();
+            return Ok(question);
         }
 
     }
